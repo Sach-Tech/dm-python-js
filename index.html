@@ -1,0 +1,58 @@
+<html>
+    <head>
+        <title>Disaster Management App</title>
+        <script>
+            function validateForm() {
+                var long = document.forms["getForm"]["long"].value;
+                var lat = document.forms["getForm"]["lat"].value;
+                if (long == "") {
+                    alert("longitude must be filled out");
+                    return false;
+                }
+                if (lat == "") {
+                    alert("latitude must be filled out");
+                    return false;
+                }
+                return true;
+            }
+            const getData = async () => {
+                if(validateForm()){
+                    const longitude = document.getElementById("long").value;
+                    const latitude = document.getElementById("lat").value;
+                    const response = await fetch('http://127.0.0.1:8009/api/data/'+longitude+'/'+latitude);
+                    const myJson = await response.json();
+                    if(myJson == null){
+                        alert("Record not found !");
+                    }else{
+                        const element = document.getElementById("image");
+                        element.src = myJson.imageUrl;
+                    } 
+                }else{
+                    return;
+                }
+                
+            }
+            
+        </script>
+        <style></style>
+    </head>
+    <body>
+        <h2>Disaster Management App</h2>
+        <div >
+            <a href="./save.html">Create</a><br><br>
+
+            <form name="getForm">
+                <label for="long">Longitude:</label><br>
+                <input type="text" id="long" name="long"><br>
+                <label for="lat">Latitude:</label><br>
+                <input type="text" id="lat" name="lat"><br><br>
+                <input type="Button" value="Get" onclick="getData()" >
+              </form>
+              
+              <form>
+                <input type="image" id="image" src="img_submit.gif" alt="Submit" width="600" height="480">
+             </form>
+        </div>
+
+    </body>
+</html>

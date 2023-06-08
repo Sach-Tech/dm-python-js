@@ -1,0 +1,93 @@
+<html>
+    <head>
+        <title>Disaster Management App</title>
+        <script>
+            function validateSaveForm() {
+                var long = document.forms["saveForm"]["long"].value;
+                var lat = document.forms["saveForm"]["lat"].value;
+                var file = document.getElementById("myFile").files[0];
+                if (long == "") {
+                    alert("longitude must be filled out");
+                    return false;
+                }
+                if (lat == "") {
+                    alert("latitude must be filled out");
+                    return false;
+                }
+                if (!file) {
+                    alert("Please upload an image");
+                    return false;
+                }
+                return true;
+            }
+            
+            const saveData = async () => {
+                if(validateSaveForm()){
+                    const longitude = document.getElementById("long").value;
+                    const latitude = document.getElementById("lat").value;
+                    var data =  {
+                            "longitude": longitude,
+                            "latitude": latitude,
+                            "imageUrl": "dummyurl",
+                            "created_at":  new Date().toJSON(),
+                            "updated_at":  new Date().toJSON()
+                        };
+                    const response = await fetch('http://127.0.0.1:8009/api/data', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data)
+                    });
+                    const oResponse = await response.json();
+                    if(oResponse._id){
+                        let formData = new FormData();
+                        var file = document.getElementById("myFile").files[0];
+                        formData.set('file', file);
+                        const responseImgUpload = await fetch('http://localhost:8009/api/data/image-upload/'+oResponse._id, {
+                            method: 'POST',
+                            body: formData
+                        });
+                        alert('Record saved successfully')
+                    }
+                    
+                }else{
+                    return;
+                }
+            }
+
+            const previewImage = (event) => {
+                const imageFiles = event.target.files;
+                const imageFilesLength = imageFiles.length;
+                if (imageFilesLength > 0) {
+                    const imageSrc = URL.createObjectURL(imageFiles[0]);
+                    const imagePreviewElement = document.querySelector("#image");
+                    imagePreviewElement.src = imageSrc;
+                    imagePreviewElement.style.display = "block";
+                }
+            };
+            
+        </script>
+        <style></style>
+    </head>
+    <body>
+        <h2>Disaster Management App</h2>
+        <div >
+            <a href="./index.html">Find</a><br><br>
+            <form name="saveForm">
+                <label for="long">Longitude:</label><br>
+                <input type="text" id="long" name="long"><br>
+                <label for="lat">Latitude:</label><br>
+                <input type="text" id="lat" name="lat"><br><br>
+
+                <label for="file-upload">Upload Image</label>
+                <input type="file" id="myFile" name="filename"  accept="image/*" onchange="previewImage(event);"><br><br>
+                
+                <input type="Button" value="Submit" onclick="saveData()">
+              </form>
+             
+              <form>
+                <input type="image" id="image" src="img_submit.gif" alt="Submit" width="600" height="480">
+             </form>
+        </div>
+
+    </body>
+</html>
