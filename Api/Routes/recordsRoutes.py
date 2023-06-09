@@ -19,7 +19,10 @@ _notFoundMessage = "Could not find record with the given Id."
 async def getAll():
     return await service.getAllRecord()
 
-
+@recordRoutes.get('/dataCount')
+async def getAllRecordCount():
+    return await service.getAllRecordCount()
+    
 @recordRoutes.get(base+'{id}')
 async def getById(id):
     return await resultVerification(id)   

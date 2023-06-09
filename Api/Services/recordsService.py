@@ -7,19 +7,20 @@ from Api.Schemas.serializeObjects import serializeDict, serializeList
 async def getAllRecord() -> list:
     return serializeList(db.records.find())
 
+async def getAllRecordCount():
+    return db.records.count_documents({})
 
 async def getById(id):
     return serializeDict(db.records.find_one({"_id": ObjectId(id)})) 
 
 
-async def getByLongLat(long,lat):
-    return serializeDict(db.records.find_one({"longitude": long, "latitude" : lat}))    
+async def getByLongLat(long,lat) -> list:
+    return serializeList(db.records.find({"longitude": long, "latitude" : lat}))    
 
 
 async def InsertRecord(data: Record):
     result = db.records.insert_one(dict(data))
     return serializeDict(db.records.find_one({"_id": ObjectId(result.inserted_id)}))
-
 
 async def updateRecord(id, data: Record) -> bool:
     db.records.find_one_and_update({"_id": ObjectId(id)}, {"$set": dict(data)})

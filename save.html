@@ -1,21 +1,28 @@
 <html>
     <head>
-        <title>Disaster Management App</title>
+        <link rel="stylesheet" href="style.css">
+        <title>Disaster Record App</title>
         <script>
+            async function loadRecordCount(){
+                const response = await fetch('http://127.0.0.1:8009/api/dataCount');
+                    const count = await response.text();
+                    const element = document.getElementById("recordCount");
+                    element.innerHTML = "Total Records " + count;
+            }
             function validateSaveForm() {
                 var long = document.forms["saveForm"]["long"].value;
                 var lat = document.forms["saveForm"]["lat"].value;
                 var file = document.getElementById("myFile").files[0];
                 if (long == "") {
-                    alert("longitude must be filled out");
+                    alert("Longitude must be filled");
                     return false;
                 }
                 if (lat == "") {
-                    alert("latitude must be filled out");
+                    alert("Latitude must be filled");
                     return false;
                 }
                 if (!file) {
-                    alert("Please upload an image");
+                    alert("Please upload an picture");
                     return false;
                 }
                 return true;
@@ -46,6 +53,7 @@
                             method: 'POST',
                             body: formData
                         });
+                        await loadRecordCount();
                         alert('Record saved successfully')
                     }
                     
@@ -68,26 +76,54 @@
         </script>
         <style></style>
     </head>
-    <body>
-        <h2>Disaster Management App</h2>
-        <div >
-            <a href="./index.html">Find</a><br><br>
-            <form name="saveForm">
-                <label for="long">Longitude:</label><br>
-                <input type="text" id="long" name="long"><br>
-                <label for="lat">Latitude:</label><br>
-                <input type="text" id="lat" name="lat"><br><br>
+    <body onload="loadRecordCount()">
+        <h1>Disaster Record App</h1>
+        <div style="text-align: right;"><span id="recordCount">Records</span></div>
+        <ul>
+            <li><a class="active" href="./save.html" >Create a Record</a></li>
+            <li><a href="./index.html">Find Record</a></li>
+        </ul>
 
-                <label for="file-upload">Upload Image</label>
-                <input type="file" id="myFile" name="filename"  accept="image/*" onchange="previewImage(event);"><br><br>
-                
-                <input type="Button" value="Submit" onclick="saveData()">
-              </form>
-             
-              <form>
-                <input type="image" id="image" src="img_submit.gif" alt="Submit" width="600" height="480">
-             </form>
-        </div>
+
+        <div class="container">
+            <form name="saveForm">
+            <div class="row">
+              <div class="col-25">
+                <label for="long">Longitude:</label>
+              </div>
+              <div class="col-75">
+                <input type="text" id="long" name="long" placeholder="Longitude..">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-25">
+                <label for="lat">Latitude:</label>
+              </div>
+              <div class="col-75">
+                <input type="text" id="lat" name="lat" placeholder="Latitude..">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-25">
+                <label for="file-upload">Upload Picture</label>
+              </div>
+              <div class="col-75">
+                <input type="file" id="myFile" name="filename"  accept="image/*" onchange="previewImage(event);">
+              </div>
+            </div>
+            <div class="row">
+                <div class="col-25">
+                  <label for="picture">Picture</label>
+                </div>
+                <div class="col-75">
+                    <input type="image" id="image" src="" alt="" width="600" height="480">
+                </div>
+              </div>
+            <div class="row">
+                <input type="Button" value="Create" onclick="saveData()">
+            </div>
+            </form>
+          </div>
 
     </body>
 </html>

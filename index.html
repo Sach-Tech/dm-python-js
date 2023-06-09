@@ -1,16 +1,25 @@
 <html>
     <head>
-        <title>Disaster Management App</title>
+        <link rel="stylesheet" href="style.css">
+        <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js" type="text/javascript"></script>
+
+        <title>Disaster Record App</title>
         <script>
+            async function loadRecordCount(){
+                const response = await fetch('http://127.0.0.1:8009/api/dataCount');
+                    const count = await response.text();
+                    const element = document.getElementById("recordCount");
+                    element.innerHTML = "Total Records " + count;
+            }
             function validateForm() {
                 var long = document.forms["getForm"]["long"].value;
                 var lat = document.forms["getForm"]["lat"].value;
                 if (long == "") {
-                    alert("longitude must be filled out");
+                    alert("Longitude must be filled");
                     return false;
                 }
                 if (lat == "") {
-                    alert("latitude must be filled out");
+                    alert("Latitude must be filled");
                     return false;
                 }
                 return true;
@@ -21,11 +30,16 @@
                     const latitude = document.getElementById("lat").value;
                     const response = await fetch('http://127.0.0.1:8009/api/data/'+longitude+'/'+latitude);
                     const myJson = await response.json();
-                    if(myJson == null){
-                        alert("Record not found !");
+                    if(myJson.length == 0){
+                        $("#pictureGallery").empty();
+                        alert("No Record found !");
                     }else{
-                        const element = document.getElementById("image");
-                        element.src = myJson.imageUrl;
+                        for(var i=0;i<myJson.length;i++){
+                            $("#pictureGallery").append('<div class="gallery"> '+
+                                ' <a target="_blank" href="'+myJson[i].imageUrl+'"> <img src="'+myJson[i].imageUrl+'" alt="Cinque Terre" width="600" height="480"></a>'+
+                                '<div class="desc">Uploaded time :'+myJson[i].created_at+'</div>'+
+                                '</div>');
+                        }
                     } 
                 }else{
                     return;
@@ -36,23 +50,45 @@
         </script>
         <style></style>
     </head>
-    <body>
-        <h2>Disaster Management App</h2>
-        <div >
-            <a href="./save.html">Create</a><br><br>
-
+    <body onload="loadRecordCount()">
+        <h1>Disaster Record App</h1> 
+        <div style="text-align: right;"><span id="recordCount">Records</span></div>
+        <ul>
+            <li><a href="./save.html" >Create a Record</a></li>
+            <li><a class="active" href="./index.html">Find Record</a></li>
+        </ul>
+        <div class="container">
             <form name="getForm">
-                <label for="long">Longitude:</label><br>
-                <input type="text" id="long" name="long"><br>
-                <label for="lat">Latitude:</label><br>
-                <input type="text" id="lat" name="lat"><br><br>
+            <div class="row">
+              <div class="col-25">
+                <label for="long">Longitude:</label>
+              </div>
+              <div class="col-75">
+                <input type="text" id="long" name="long" placeholder="Longitude..">
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-25">
+                <label for="lat">Latitude:</label>
+              </div>
+              <div class="col-75">
+                <input type="text" id="lat" name="lat" placeholder="Latitude..">
+              </div>
+            </div>
+            <div class="row">
                 <input type="Button" value="Get" onclick="getData()" >
-              </form>
-              
-              <form>
-                <input type="image" id="image" src="img_submit.gif" alt="Submit" width="600" height="480">
-             </form>
-        </div>
+              </div>
+            <div class="row">
+              <div class="col-25" >
+                <label for="picture">Pictures</label>
+              </div>
+              <div class="col-75" id="pictureGallery">
+              </div>
+            </div>
+           
+            </form>
+          </div>
 
+         
     </body>
 </html>
