@@ -14,12 +14,9 @@
             function validateForm() {
                 var long = document.forms["getForm"]["long"].value;
                 var lat = document.forms["getForm"]["lat"].value;
-                if (long == "") {
-                    alert("Longitude must be filled");
-                    return false;
-                }
-                if (lat == "") {
-                    alert("Latitude must be filled");
+                var hastag = document.getElementById("hastag").value;
+                if (hastag == "" && (long == "" || lat == "")) {
+                    alert("Hashtag or Longitude,Latitude must be filled");
                     return false;
                 }
                 return true;
@@ -28,16 +25,28 @@
                 if(validateForm()){
                     const longitude = document.getElementById("long").value;
                     const latitude = document.getElementById("lat").value;
-                    const response = await fetch('http://127.0.0.1:8009/api/data/'+longitude+'/'+latitude);
+                    const hastag = document.getElementById("hastag").value;
+                    var url =""
+                    if(hastag !== ""){
+                        url = 'http://127.0.0.1:8009/api/record/'+hastag
+                    }else{
+                        url = 'http://127.0.0.1:8009/api/data/'+longitude+'/'+latitude
+                    }
+                    const response = await fetch(url);
                     const myJson = await response.json();
                     if(myJson.length == 0){
                         $("#pictureGallery").empty();
                         alert("No Record found !");
                     }else{
+                        $("#pictureGallery").empty();
                         for(var i=0;i<myJson.length;i++){
                             $("#pictureGallery").append('<div class="gallery"> '+
                                 ' <a target="_blank" href="'+myJson[i].imageUrl+'"> <img src="'+myJson[i].imageUrl+'" alt="Cinque Terre" width="600" height="480"></a>'+
                                 '<div class="desc">Uploaded time :'+myJson[i].created_at+'</div>'+
+                                '<div class="desc">Latitude :'+myJson[i].latitude+'</div>'+
+                                '<div class="desc">Longitude :'+myJson[i].longitude+'</div>'+
+                                '<div class="desc">Altitude :'+myJson[i].altitude+'</div>'+
+                                '<div class="desc">#'+myJson[i].has_tag+'</div>'+
                                 '</div>');
                         }
                     } 
@@ -58,23 +67,31 @@
             <li><a class="active" href="./index.html">Find Record</a></li>
         </ul>
         <div class="container">
-            <form name="getForm">
+            <form name="getForm"> 
             <div class="row">
-              <div class="col-25">
-                <label for="long">Longitude:</label>
-              </div>
-              <div class="col-75">
-                <input type="text" id="long" name="long" placeholder="Longitude..">
-              </div>
+                <div class="col-25">
+                  <label for="long">HashTag:</label>
+                </div>
+                <div class="col-75">
+                  <input type="text" id="hastag" name="hastag" placeholder="HastTag..">
+                </div>
             </div>
             <div class="row">
-              <div class="col-25">
-                <label for="lat">Latitude:</label>
+                <div class="col-25">
+                  <label for="long">Longitude:</label>
+                </div>
+                <div class="col-75">
+                  <input type="text" id="long" name="long" placeholder="Longitude..">
+                </div>
               </div>
-              <div class="col-75">
-                <input type="text" id="lat" name="lat" placeholder="Latitude..">
-              </div>
-            </div>
+              <div class="row">
+                <div class="col-25">
+                  <label for="lat">Latitude:</label>
+                </div>
+                <div class="col-75">
+                  <input type="text" id="lat" name="lat" placeholder="Latitude..">
+                </div>
+              </div>  
             <div class="row">
                 <input type="Button" value="Get" onclick="getData()" >
               </div>

@@ -1,6 +1,8 @@
 import os
 from uuid import uuid4
 from PIL import Image
+import shutil
+
 
 static = 'static'
 
@@ -16,10 +18,15 @@ def save_picture(file, folderName: str = '', fileName: str = None):
         
     picture_path = os.path.join(path,picture_name)
 
-    output_size = (600,480)
-    img = Image.open(file.file)
+    #new
+    with open(picture_path, "wb") as buffer:
+        shutil.copyfileobj(file.file, buffer)
+
+    #new end
+    #output_size = (600,480)
+    #img = Image.open(file.file)
     
-    img.thumbnail(output_size)
-    img.save(picture_path)
+    #img.thumbnail(output_size)
+    #img.save(picture_path)
     
     return f'{static}/{folderName}/{picture_name}'

@@ -2,7 +2,7 @@ from bson import ObjectId
 from Api.config.db import db
 from Api.models.records import Record
 from Api.Schemas.serializeObjects import serializeDict, serializeList
-
+from exif import Image
 
 async def getAllRecord() -> list:
     return serializeList(db.records.find())
@@ -16,6 +16,9 @@ async def getById(id):
 
 async def getByLongLat(long,lat) -> list:
     return serializeList(db.records.find({"longitude": long, "latitude" : lat}))    
+
+async def getByHashTag(hashtag) -> list:
+    return serializeList(db.records.find({"has_tag": hashtag}))    
 
 
 async def InsertRecord(data: Record):
@@ -35,6 +38,10 @@ async def deleteRecord(id) -> bool:
     db.records.find_one_and_delete({"_id": ObjectId(id)})
     return True
 
+def getImageMetaDataDetails(imageUrl: str):
+    with open(imageUrl, 'rb') as image_file:
+         my_image = Image(image_file)
+    return my_image;
 
 
 

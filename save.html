@@ -10,15 +10,10 @@
                     element.innerHTML = "Total Records " + count;
             }
             function validateSaveForm() {
-                var long = document.forms["saveForm"]["long"].value;
-                var lat = document.forms["saveForm"]["lat"].value;
+                const hastag = document.getElementById("hastag").value;
                 var file = document.getElementById("myFile").files[0];
-                if (long == "") {
-                    alert("Longitude must be filled");
-                    return false;
-                }
-                if (lat == "") {
-                    alert("Latitude must be filled");
+                if (hastag == "") {
+                    alert("Hashtag must be filled");
                     return false;
                 }
                 if (!file) {
@@ -30,33 +25,16 @@
             
             const saveData = async () => {
                 if(validateSaveForm()){
-                    const longitude = document.getElementById("long").value;
-                    const latitude = document.getElementById("lat").value;
-                    var data =  {
-                            "longitude": longitude,
-                            "latitude": latitude,
-                            "imageUrl": "dummyurl",
-                            "created_at":  new Date().toJSON(),
-                            "updated_at":  new Date().toJSON()
-                        };
-                    const response = await fetch('http://127.0.0.1:8009/api/data', {
+                    const hastag = document.getElementById("hastag").value;
+                    let formData = new FormData();
+                    var file = document.getElementById("myFile").files[0];
+                    formData.set('file', file);
+                    const responseImgUpload = await fetch('http://localhost:8009/api/uploadPicture/'+hastag, {
                         method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(data)
+                        body: formData
                     });
-                    const oResponse = await response.json();
-                    if(oResponse._id){
-                        let formData = new FormData();
-                        var file = document.getElementById("myFile").files[0];
-                        formData.set('file', file);
-                        const responseImgUpload = await fetch('http://localhost:8009/api/data/image-upload/'+oResponse._id, {
-                            method: 'POST',
-                            body: formData
-                        });
-                        await loadRecordCount();
-                        alert('Record saved successfully')
-                    }
-                    
+                    await loadRecordCount();
+                    alert('Record saved successfully')
                 }else{
                     return;
                 }
@@ -89,18 +67,10 @@
             <form name="saveForm">
             <div class="row">
               <div class="col-25">
-                <label for="long">Longitude:</label>
+                <label for="long">HashTag:</label>
               </div>
               <div class="col-75">
-                <input type="text" id="long" name="long" placeholder="Longitude..">
-              </div>
-            </div>
-            <div class="row">
-              <div class="col-25">
-                <label for="lat">Latitude:</label>
-              </div>
-              <div class="col-75">
-                <input type="text" id="lat" name="lat" placeholder="Latitude..">
+                <input type="text" id="hastag" name="hastag" placeholder="HastTag..">
               </div>
             </div>
             <div class="row">
