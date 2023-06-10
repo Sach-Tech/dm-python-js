@@ -1,4 +1,4 @@
-# Users WebAPI made with FastApi
+# WebAPI made with FastApi
 
 In order to run this project you have to run the following code:
 
