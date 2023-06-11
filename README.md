@@ -12,9 +12,9 @@ In order to run this project you have to run the following code:
 
 # Technology and language
 
-Frontend - html, javascript and css
-Backend - python
-DB - MongoDB
+1. Frontend - html, javascript and css
+2. Backend - python
+3. DB - MongoDB
 
 
 
