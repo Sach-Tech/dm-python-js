@@ -4,7 +4,7 @@
         <title>Disaster Record App</title>
         <script>
             async function loadRecordCount(){
-                const response = await fetch('http://127.0.0.1:8009/api/dataCount');
+                const response = await fetch('http://127.0.0.1:8090/api/dataCount');
                     const count = await response.text();
                     const element = document.getElementById("recordCount");
                     element.innerHTML = "Total Records " + count;
@@ -29,7 +29,7 @@
                     let formData = new FormData();
                     var file = document.getElementById("myFile").files[0];
                     formData.set('file', file);
-                    const responseImgUpload = await fetch('http://localhost:8009/api/uploadPicture/'+hastag, {
+                    const responseImgUpload = await fetch('http://127.0.0.1:8090/api/uploadPicture/'+hastag, {
                         method: 'POST',
                         body: formData
                     });

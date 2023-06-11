@@ -6,7 +6,7 @@
         <title>Disaster Record App</title>
         <script>
             async function loadRecordCount(){
-                const response = await fetch('http://127.0.0.1:8009/api/dataCount');
+                const response = await fetch('http://127.0.0.1:8090/api/dataCount');
                     const count = await response.text();
                     const element = document.getElementById("recordCount");
                     element.innerHTML = "Total Records " + count;
@@ -28,9 +28,9 @@
                     const hastag = document.getElementById("hastag").value;
                     var url =""
                     if(hastag !== ""){
-                        url = 'http://127.0.0.1:8009/api/record/'+hastag
+                        url = 'http://127.0.0.1:8090/api/record/'+hastag
                     }else{
-                        url = 'http://127.0.0.1:8009/api/data/'+longitude+'/'+latitude
+                        url = 'http://127.0.0.1:8090/api/data/'+longitude+'/'+latitude
                     }
                     const response = await fetch(url);
                     const myJson = await response.json();
@@ -102,10 +102,7 @@
               <div class="col-75" id="pictureGallery">
               </div>
             </div>
-           
             </form>
           </div>
-
-         
     </body>
 </html>
