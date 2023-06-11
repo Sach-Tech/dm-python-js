@@ -34,10 +34,15 @@
                         body: formData
                     });
                     await loadRecordCount();
-                    alert('Record saved successfully')
+                    alert('Record saved successfully');
+                    refreshPage();
                 }else{
                     return;
                 }
+            }
+
+            function refreshPage(){
+                location.reload();
             }
 
             const previewImage = (event) => {
@@ -67,7 +72,7 @@
             <form name="saveForm">
             <div class="row">
               <div class="col-25">
-                <label for="long">HashTag:</label>
+                <label for="long">HashTag : </label>
               </div>
               <div class="col-75">
                 <input type="text" id="hastag" name="hastag" placeholder="HastTag..">
@@ -75,7 +80,7 @@
             </div>
             <div class="row">
               <div class="col-25">
-                <label for="file-upload">Upload Picture</label>
+                <label for="file-upload">Upload Picture :</label>
               </div>
               <div class="col-75">
                 <input type="file" id="myFile" name="filename"  accept="image/*" onchange="previewImage(event);">
@@ -83,7 +88,7 @@
             </div>
             <div class="row">
                 <div class="col-25">
-                  <label for="picture">Picture</label>
+                  <label for="picture">Picture :</label>
                 </div>
                 <div class="col-75">
                     <input type="image" id="image" src="" alt="" width="600" height="480">

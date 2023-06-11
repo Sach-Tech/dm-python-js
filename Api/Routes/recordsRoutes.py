@@ -73,15 +73,15 @@ async def saveContent(hastag: str, file: UploadFile = File(...)):
     imageData = service.getImageMetaDataDetails(imageUrl)
     imageUrl  = imageUrl
     if imageData._has_exif:
-        longitude = str(imageData.gps_longitude) if hasattr(imageData, 'gps_longitude') else ""
-        latitude = str(imageData.gps_latitude) if hasattr(imageData, 'gps_latitude') else ""
-        altitude = str(imageData.gps_altitude) if hasattr(imageData, 'gps_altitude') else ""
+        longitude = str(imageData.gps_longitude) if hasattr(imageData, 'gps_longitude') else "-"
+        latitude = str(imageData.gps_latitude) if hasattr(imageData, 'gps_latitude') else "-"
+        altitude = str(imageData.gps_altitude) if hasattr(imageData, 'gps_altitude') else "-"
         created_at = str(imageData.datetime_original) if hasattr(imageData, 'datetime_original') else datetime.datetime.now().strftime("%m:%d:%Y %H:%M:%S")
         updated_at = str(imageData.datetime_original) if hasattr(imageData, 'datetime_original') else datetime.datetime.now().strftime("%m:%d:%Y %H:%M:%S")
     else:
-        longitude = ""
-        latitude = ""
-        altitude = ""
+        longitude = "-"
+        latitude = "-"
+        altitude = "-"
         created_at = datetime.datetime.now().strftime("%m:%d:%Y %H:%M:%S")
         updated_at = datetime.datetime.now().strftime("%m:%d:%Y %H:%M:%S")
     data = Record(longitude = longitude, latitude = latitude, altitude = altitude, has_tag = hastag, imageUrl = imageUrl, created_at = created_at, updated_at = updated_at);

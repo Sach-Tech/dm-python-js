@@ -42,11 +42,11 @@
                         for(var i=0;i<myJson.length;i++){
                             $("#pictureGallery").append('<div class="gallery"> '+
                                 ' <a target="_blank" href="'+myJson[i].imageUrl+'"> <img src="'+myJson[i].imageUrl+'" alt="Cinque Terre" width="600" height="480"></a>'+
-                                '<div class="desc">Uploaded time :'+myJson[i].created_at+'</div>'+
-                                '<div class="desc">Latitude :'+myJson[i].latitude+'</div>'+
-                                '<div class="desc">Longitude :'+myJson[i].longitude+'</div>'+
-                                '<div class="desc">Altitude :'+myJson[i].altitude+'</div>'+
                                 '<div class="desc">#'+myJson[i].has_tag+'</div>'+
+                                '<div class="desc">Latitude : '+myJson[i].latitude+'</div>'+
+                                '<div class="desc">Longitude : '+myJson[i].longitude+'</div>'+
+                                '<div class="desc">Altitude : '+myJson[i].altitude+'</div>'+
+                                '<div class="desc">Uploaded time : '+myJson[i].created_at+'</div>'+
                                 '</div>');
                         }
                     } 
@@ -70,7 +70,7 @@
             <form name="getForm"> 
             <div class="row">
                 <div class="col-25">
-                  <label for="long">HashTag:</label>
+                  <label for="long">HashTag : </label>
                 </div>
                 <div class="col-75">
                   <input type="text" id="hastag" name="hastag" placeholder="HastTag..">
@@ -78,7 +78,7 @@
             </div>
             <div class="row">
                 <div class="col-25">
-                  <label for="long">Longitude:</label>
+                  <label for="long">Longitude : </label>
                 </div>
                 <div class="col-75">
                   <input type="text" id="long" name="long" placeholder="Longitude..">
@@ -86,7 +86,7 @@
               </div>
               <div class="row">
                 <div class="col-25">
-                  <label for="lat">Latitude:</label>
+                  <label for="lat">Latitude : </label>
                 </div>
                 <div class="col-75">
                   <input type="text" id="lat" name="lat" placeholder="Latitude..">
@@ -97,7 +97,7 @@
               </div>
             <div class="row">
               <div class="col-25" >
-                <label for="picture">Pictures</label>
+                <label for="picture">Pictures : </label>
               </div>
               <div class="col-75" id="pictureGallery">
               </div>
